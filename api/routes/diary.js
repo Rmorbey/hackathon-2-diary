@@ -4,9 +4,9 @@ const entryController = require('../controllers/diary.js');
 
 const entryRouter = Router();
 
-entryRouter.get("/", authenticator, postController.index);
-entryRouter.post("/", postController.create);
-entryRouter.get("/:id", postController.show);
-entryRouter.delete("/:id", postController.destroy);
+entryRouter.get("/", authenticator, entryController.index);
+entryRouter.post("/", entryController.create);
+entryRouter.get("/:id", entryController.show);
+entryRouter.delete("/:id", entryController.destroy);
 
 module.exports = entryRouter;
