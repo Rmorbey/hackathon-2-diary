@@ -4,7 +4,6 @@ CREATE TABLE diary (
     entry_id INT GENERATED ALWAYS AS IDENTITY,
     title VARCHAR (100) NOT NULL,
     content VARCHAR (500) NOT NULL,
-	entry_created_at INT DEFAULT NULL,
-	entry_updated_at INT DEFAULT NULL,
+    entry_date TIMESTAMP NOT NULL,
     PRIMARY KEY (entry_id)
 );
