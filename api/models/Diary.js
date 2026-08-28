@@ -40,12 +40,11 @@ class Entry {
     const {
       title,
       content,
-      entry_created_at = null,
-      entry_updated_at = null,
+      entry_date,
     } = data;
     let response = await db.query(
-      "INSERT INTO diary (title, content, entry_created_at) VALUES ($1, $2, $3) RETURNING entry_id;",
-      [title, content, entry_created_at],
+      "INSERT INTO diary (title, content, entry_date) VALUES ($1, $2, $3) RETURNING entry_id;",
+      [title, content, entry_date],
     );
     const newId = response.rows[0].entry_id;
     const newEntry = await Entry.getOneById(newId);
@@ -62,8 +61,8 @@ class Entry {
 
   async update(data) {
     const response = await db.query(
-      "UPDATE diary SET content = $1, entry_updated_at = $2 WHERE entry_id = $3 RETURNING entry_id, content;",
-      [data.content, this.entry_updated_at,this.entry_id],
+      "UPDATE diary SET content = $1 WHERE entry_id = $2 RETURNING entry_id, content;",
+      [data.content, this.entry_id],
     );
 
     if (response.rows.length != 1) {

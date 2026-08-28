@@ -54,11 +54,11 @@ async function update(req, res) {
 
 async function getByDate (req,res) {
     try{
-        const data = req.body
+        const data = req.params.date
         const entries = await Entry.getByDate(data)
         res.status(200).json(entries)
     } catch (err) {
-        res.status(404).json({error: err.message })
+        res.status(500).json({error: err.message })
     }
 }
 
