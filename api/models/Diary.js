@@ -1,3 +1,5 @@
+const db = require('../database/connect')
+
 class Entry {
   constructor({ entry_id, title, content, entry_created_at, entry_updated_at }) {
     this.entry_id = entry_id;
