@@ -1,4 +1,4 @@
-const db = require('../database/connect')
+const db = require("../database/connect");
 
 class Entry {
   constructor({
@@ -56,8 +56,8 @@ class Entry {
 
   async update(data) {
     const response = await db.query(
-      "UPDATE diary SET content = $1 WHERE entry_id = $2 RETURNING entry_id, content;",
-      [data.content, this.entry_id],
+      "UPDATE diary SET content = $1, entry_updated_at = $2 WHERE entry_id = $3 RETURNING entry_id, content;",
+      [data.content, this.entry_updated_at,this.entry_id],
     );
 
     if (response.rows.length != 1) {
@@ -68,5 +68,4 @@ class Entry {
   }
 }
 
-
-module.exports = Entry
+module.exports = Entry;
