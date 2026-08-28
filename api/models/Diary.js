@@ -5,14 +5,12 @@ class Entry {
     entry_id,
     title,
     content,
-    entry_created_at,
-    entry_updated_at,
+    entry_date
   }) {
     this.entry_id = entry_id;
     this.title = title;
     this.content = content;
-    this.entry_created_at = entry_created_at;
-    this.entry_updated_at = entry_updated_at;
+    this.entry_date = entry_date
   }
 
   static async getAll() {
@@ -30,16 +28,23 @@ class Entry {
     return new Entry(response.rows[0]);
   }
 
+  static async getByDate(date) {
+    const response = await db.query("SELECT * FROM diary WHERE entry_date::date = $1 ORDER BY entry_date DESC;", [
+      date
+    ]
+    )
+    return response.rows.map((p) => new Entry(p));
+  } 
+
   static async create(data) {
     const {
       title,
       content,
-      entry_created_at,
-      entry_updated_at = null,
+      entry_date,
     } = data;
     let response = await db.query(
-      "INSERT INTO diary (title, content, entry_created_at) VALUES ($1, $2, $3) RETURNING entry_id;",
-      [title, content, entry_created_at],
+      "INSERT INTO diary (title, content, entry_date) VALUES ($1, $2, $3) RETURNING entry_id;",
+      [title, content, entry_date],
     );
     const newId = response.rows[0].entry_id;
     const newEntry = await Entry.getOneById(newId);
@@ -56,8 +61,8 @@ class Entry {
 
   async update(data) {
     const response = await db.query(
-      "UPDATE diary SET content = $1, entry_updated_at = $2 WHERE entry_id = $3 RETURNING entry_id, content;",
-      [data.content, this.entry_updated_at,this.entry_id],
+      "UPDATE diary SET content = $1 WHERE entry_id = $2 RETURNING entry_id, content;",
+      [data.content, this.entry_id],
     );
 
     if (response.rows.length != 1) {
