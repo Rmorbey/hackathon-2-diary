@@ -22,7 +22,7 @@ class Entry {
 
   static async getOneById(id) {
     const response = await db.query("SELECT * FROM diary WHERE entry_id = $1", [
-      entry_id,
+      id,
     ]);
     if (response.rows.length != 1) {
       throw new Error("Unable to locate post.");
@@ -34,7 +34,7 @@ class Entry {
     const {
       title,
       content,
-      entry_created_at = null,
+      entry_created_at,
       entry_updated_at = null,
     } = data;
     let response = await db.query(
